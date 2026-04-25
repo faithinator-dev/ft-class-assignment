@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+    <table class="table" id="table">
+        <tr>
+            <th>S/n</th>
+            <th>Name</th>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+</body>
+<script>
+    let name = ["Faith","tolu","heritage","Adewale","Muyiwa","Gbemiga","seun","Akin", "darasimi", "olamide", "Favour","segun","makinde","damilare","seyifunmi","glory","grace","felix","tomiwa", "luke"]
+
+    console.log(name)
+    for (let i = 0; i < name.length; i++) {
+        const element = name[i]
+        console.log(element)
+        // table.innerHTML +=  ` 
+        //     <tr>
+        //         <td>${[i]}</td>
+        //         <td>${name[i]}</td>
+        //     </tr>`
+
+        if (i % 2 == 0){
+            table.innerHTML +=   `<tr >
+                <td class=" text-success">${[i +1]}</td>
+                <td class=" text-success">${name[i]}</td>
+            </tr>`   
+         }
+        else{
+            table.innerHTML +=   `<tr >
+                <td class="text-danger">${[i +1]}</td>
+                <td class="text-danger">${name[i]}</td>
+            </tr>`
+        }
+    }
+</script>
+</html>

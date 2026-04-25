@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+
+
+<body class="m-0 d-block text-center  container ">
+    <!-- <form action="index.html" method="post"> -->
+    <input type="text" id="studentNameInput" placeholder="Enter your name" class="form-control border-primary-subtle col-7 my-2 text-success" required>
+    
+
+
+
+    <select id="userCourse" class="form-control rounded col-7 my-3 border-primary" style="outline: none;">
+        <option value="" id="NONE">Select your course</option>
+        <option value="CS" id="object">Computer science</option>
+        <option value="SE" id="SE">Software Engineering</option>
+    </select>
+
+    <button class="btn btn-outline-primary m-4" onclick="generateMatric()">Get your matric Number</button>
+    <!-- </form> -->
+    <br><br>
+    <div>
+        <div class="alert alert-primary fade show" role="alert" id="alertInfo" style="display: none;">
+        </div>
+        <div id="displayMatric"></div>
+        <div >
+            <table class="table table-bordered tabe-striped mt-4" id="displayTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Matric Number</th>
+                                    <th>Department</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+            </table>
+                         
+        </div>
+        
+        
+    </div>
+</body>
+<script>
+    
+    // let names = document.getElementById('studentNameInput').value
+    let matric_Numbers = []
+    let stuNames = []
+    let totalStudents = 0
+    let code;
+// let names = document.getElementById('studentNameInput').value
+    // let dept = document.getElementById('userCourse').value    // let matricNumber = []
+    
+    
+    // 
+    function generateMatric2(){
+        let names = document.getElementById('studentNameInput').value
+    let dept = document.getElementById('userCourse').value
+
+           alertInfo.style.display = 'none'
+            // alertInfo.innerHTML = ""
+           console.log("Name loading")
+        
+
+        if (dept == "SE"){
+            year = new Date().getFullYear(); 
+            // console.log(year)
+            dept = 'Software Engineering'
+            code = `SQI|SE|${year}${Math.floor(Math.random() * 100000)}`
+            console.log("software engineer loading")
+            displayMatric.innerHTML = `<span class="text-capitalize"> ${names}
+            Matric Number Allocated: <strong class="text-success">${code}</strong></span>`;
+        }else if (dept == "CS"){
+            year = new Date().getFullYear() 
+            dept = 'Computer Sciences'
+            console.log(year)
+            code = `SQI|CS|${year}${Math.floor(Math.random(1000) * 9000)}`
+            console.log("Computer Science Loading")
+            displayMatric.innerHTML = `<span class="text-capitalize">${names} Matric Number Allocated: <strong class="text-success">${code}</strong></span>`;
+        } else{
+            alertInfo.innertext = "Choose a course"
+        }
+        // totalStudents++
+        // let currentCount = totalStudents
+        let matricNumber = code
+
+        matric_Numbers.push(matricNumber)
+
+        console.log(matricNumber)
+
+        tableDisplay()
+        // console.log(names)
+
+        // return
+    }
+
+
+    
+    function addStudent(){
+        let names = document.getElementById('studentNameInput').value
+        // stuNames.push(names)
+        console.log(`my name is ${names}`)
+        if (stuNames.indexOf(names) <= -1){
+            console.log("Name is good to go")
+            stuNames.push(names)
+            generateMatric2()
+            // return
+         } else if (names == ""){
+            alertInfo.style.display = 'block'
+            alertInfo.innerHTML =""
+            
+            
+            alertInfo.innerHTML += "Enter your name"
+            console.log("Enter your name")
+         } 
+        else{
+            console.log("name already exist")
+            alertInfo.style.display = 'block'
+            alertInfo.innerHTML = `<p class="text-center fw-bold">Name Already Exist</p>`
+            
+        }
+    
+    }
+
+    
+    // console.log("Name is already in")
+    // addStudent()
+function generateMatric(){
+    
+        addStudent()
+        console.log(stuNames)
+        // let userName = document.getElementById('');
+        // let dept = courses
+
+}
+
+
+
+    // function addStudent(){
+    //     let names = document.getElementById('studentNameInput').value
+    //     let courses = document.getElementById('userCourse').value
+    //     if (stuNames.indexOf(names)){
+    //         alertInfo.innertext = `Name already Exist`
+    //         console.log("name is in exitence")
+    //     }else{
+    //       stuNames.push(name);  
+
+        //   displayMatric.innerHTML = `<p class="text-success">${names}
+        //     Matric Number Allocated: <strong>${matricNumber}</strong></p>`;
+    //     }
+    //     console.log(stuNames)
+    // }
+
+    function tableDisplay(){
+        let tableView = document.getElementById('displayTable')
+
+        // tableHtml = ``
+        for(i = 0; i < stuNames.lenght; i++) {
+            displayTable.innerHTML += `<tr>
+                            <td>${stuNames[i]}</td>
+                            <td>${matric_Numbers[i]}</td>
+                            <td>${dept}</td>
+                             <td>
+                                <button class="btn btn-danger btn-sm" onclick="removeStudent(${i})">Delete</button>
+                            </td> 
+                          </tr>`;
+        }
+    }
+
+    
+</script>
+</html>

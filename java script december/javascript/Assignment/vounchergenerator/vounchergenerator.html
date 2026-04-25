@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body class="text-center justify-content-center m-5 p-5 ">
+    <div class="btn-info mx-auto border-1 border-success m-2 p-2 rounded-pill w-75">
+        <h1 class="display-4 fs-2 text-success">Tolutek ticket voucher Generator</h1>
+        <div class="display mx-auto" id="display"></div>
+        <button class="btn m-2 btn-outline-success" onclick="generatevoucher(12)">generate voucher</button>
+        <button class="btn m-2 btn-outline-success" onclick="generatecard(16)">generate airtime</button>
+    </div>
+    
+</body>
+<script>
+    function generatevoucher(length){
+        const characters = '012345678901234567890123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+        let voucher = '';
+        for (let i = 0; i < length; i++){
+            voucher += characters[Math.floor(Math.random() * characters.length)]
+        }
+        const display = document.querySelector('.display');
+        display.innerHTML = '';
+        display.innerHTML = voucher;
+        return voucher;
+    }
+    display.innerHTML = '';
+
+
+
+    function generatecard(length){
+        const char = '012345678901234567890123456789'.split('')
+        let voucher = '';
+        for (let i = 0; i < length; i++){
+            voucher += characters[Math.floor(Math.random() * characters.length)]
+        }
+        const display = document.querySelector('.display');
+        display.innerHTML = '';
+        display.innerHTML = voucher;
+        return voucher;
+    }
+    display.innerHTML = '';
+
+
+    // console.log(generatevoucher(12));
+</script>
+</html>

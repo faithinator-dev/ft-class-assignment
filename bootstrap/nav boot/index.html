@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <style>
+            .nav-link{
+                color: white;
+            }
+            .nav-link:hover{
+                color: grey;
+            }
+            .modalDiv:hover{
+                border: 1px solid lightblue;
+            }
+            .carousel-inner{
+                position: relative;
+                padding-bottom: 40px;
+            }
+            .carousel-control-prev{
+               position: absolute;
+               top: 92%;
+               left: 80%;
+            }
+
+            .carousel-control-next{
+               position: absolute;
+               top: 92%;
+               left: 90%;
+            }
+
+            .carousel-indicators{
+                width: 50px;
+                height: 20px;
+                justify-self: center;
+                position: absolute;
+                top: 80%;
+                align-content: center;
+                /* background-color: #000038; */
+            }
+
+            .carousel-indicators button{
+                height: 10px !important;
+                width: 10px !important;
+            }
+
+            .accordion-button{
+                outline: none !important;
+                border: none;
+                background-color: white;
+                color: black;
+            }
+            .accordion-header{
+                outline: none !important;
+                border: none;
+                cursor: pointer;
+
+            .accordion-header:focus{
+                box-shadow: none;
+            }
+
+            .accordion-icon{
+                content: url(jam--minus.svg);
+            }
+
+            
+        </style>
+</head>
+
+<body>
+    <nav class="navbar  navbar-expand-lg d-flex justify-content-between" style="background-color: #000038;">
+        <div class="container">
+            <div>
+                <a href="" class="navbar-brand"><img src="Edozzier-8@2x.png" alt="" width="100px"></a>
+            </div>
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarlinks">
+                <span class="navbar-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarlinks">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a href="" class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown">features</a>
+                        <div class="dropdown-menu ps-3 pe-5 rounded-0  " style="background-color: #000038; color: white; width: 18vw;">
+                            <a href="" class="nav-link">payroll</a>
+                            <a href="" class="nav-link">Access</a>
+                            <a href="" class="nav-link">HR</a>
+                            <a href="" class="nav-link">Exams and records</a>
+                            <a href="" class="nav-link">Automated payment</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">company</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="" class="nav-link">pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">FAQs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link" data-bs-toggle="modal" data-bs-target="#ngmodal">NG</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+    <div class="modal" id="ngmodal">
+        <div class="modal-dialog w-25 modal-dialog-centered">
+            <div class="modal-content bg-light  p-3">
+                <p class="fw-bold">Select your locale:</p>
+                
+                <div class="border border-primary rounded-1 p-3 mb-2 modalDiv">
+                    <span style="width: 30px; height: 30px;" class="rounded-circle bg-secondary p-2">NG</span>
+                    <span>Nigeria</span>
+                </div>
+                <div class="border border-secondary-subtle rounded-1 p-3">
+                    <span style="width: 30px; height: 30px;" class="rounded-circle bg-secondary p-2 mb-2 modalDiv">AO</span>
+                    <span>Angola</span>
+                </div>
+                <div class="border border-secondary-subtle  rounded-1 p-3">
+                    <span style="width: 30px; height: 30px;" class="rounded-circle bg-secondary p-2 mb-2 modalDiv">EG</span>
+                    <span>Egypt</span>
+                    </div>
+
+                    <div class="border border-secondary-subtle rounded-1 p-3 mb-2 modalDiv 
+                    ">
+                    <span style="width: 30px; height: 30px;" class="rounded-circle bg-secondary p-2">KE</span>
+                    <span>Kenya</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-100 bg-dark d-block d-md-block" style="height: 50vh;">
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <div class="bg-danger w-25 d-xs-block" style="height: 40vh;"></div>
+        <div class="bg-warning w-25 d-none d-lg-block " style="height: 40vh;"></div>
+        <div class="bg-primary w-25 d-none d-md-block" style="height: 40vh;"></div>
+    </div>
+
+    <div class="container d-xl-flex justify-content-center gap-3 mt-5">
+        <div class="w-50 d-flex justify-content-end">
+            <img src="78cc3926-ae5c-4fc3-9203-825052cad515.png" alt=""  style="width: 20vw; height: 100vh;">
+        </div>
+        <div class="mt-4 w-50">
+            <div class="lh-1">
+                <p class="fw-medium fs-4 d-inline">Your Financial Life</p>
+                <p class="fw-medium fs-4 text-warning">Simplified</p>
+            </div>   
+
+            <span class="my-3 text-secondary ">Experience the future of banking with our beautifully designed mobile app. Manage multiple currencies, transfer money instantly, and pay bills with ease.</span>
+            <div class="d-flex align-items-center my-3 gap-2">
+                <span class="fs-3 mt-0">
+                    💰
+                </span>
+                <div>
+                    <b>Multi-Currency Wallet</b>
+                    <p>Hold and exchange EUR, USD, NGN and more</p>
+                </div>
+            </div>
+        
+
+            <div class="d-flex align-items-center">
+                <div>
+                    ⚡
+                </div>
+                <div class="">
+                    <b>Multi-Currency Wallet</b>
+                    <p>Hold and exchange EUR, USD, NGN and more</p>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <div>
+                    📱
+                </div>
+                <div>
+                    <b>Multi-Currency Wallet</b>
+                    <p>Hold and exchange EUR, USD, NGN and more</p>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <div>
+                    🔔
+                </div>
+                <div>
+                    <b>Multi-Currency Wallet</b>
+                    <p>Hold and exchange EUR, USD, NGN and more</p>
+                </div>
+
+                <div class="see-all d-block d-md-none text-warning text-center">
+                    <p>See all features</p>
+                </div>
+            </div>
+        </div>
+ 
+    </div>
+
+        <!-- corousel -->
+
+    <div class="carousel slide" id="risevest" data-bs-ride="carousel" >
+
+        <!--carousel indicator-->
+
+        <div class="carousel-indicators ">
+            <button data-bs-target="#risevest" data-bs-slide-to="0" aria-current="true" class="active rounded-circle"></button>
+            <button data-bs- target="#risevest" data-bs-slide-to="1" class="active rounded-circle"></button>
+            <button data-bs-target="#risevest" data-bs-slide-to="2" class="active rounded-circle"></button>
+        </div>
+        <div class="carousel-inner w-50 ms-auto me-auto">
+            <div class="carousel-item active" data-bs-interval="3000">
+                <img src="imgi_51_Risevest_Henry.00_01_11_04.Still002_qzzgdj.jpg" alt="" style="width: 50vw;" class="rounded-5">
+                <div class="carousel-caption text-start"><span class="text-light ">Henry</span></div>
+                
+            </div>
+            <div class="carousel-item " data-bs-interval="2000">
+                <img src="imgi_49_Risevest_Henry.00_03_57_03.Still007_pbzpmt.jpg"  style="width: 50vw;" class="rounded-5">
+                <div class="carousel-caption text-start"><span class="text-light">Sanni</span></div>
+            </div>
+            <div class="carousel-item " data-bs-interval="1000">
+                <img src="imgi_50_Risevest_Henry.00_01_35_15.Still004_rlzbzx.jpg"  style="width: 50vw;" class="rounded-5">
+                <div class="carousel-caption text-start"><span class="text-light">Layo</span></div>
+            </div>
+
+            <button class="carousel-control-prev d-flex align-items-center justify-content-center" data-bs-target="#risevest" data-bs-slide="prev">
+                <img src="pixel--arrow-left-solid.svg" alt="">
+            </button>
+
+            <button class="carousel-control-next" data-bs-target="#risevest" data-bs-slide="next">
+                <img src="pixel--arrow-right-solid.svg" alt="">
+            </button>
+
+            
+        </div>
+    </div>
+
+    <!-- accodion -->
+     <div class="accordion accodion-flush container w-50" id="pinterest">
+        <div class="accordion-item">
+            <div class="accordion-header d-flex justify-content-between p-4" data-bs-toggle="collapse" data-bs-target="#faq1">
+                <!-- <button class="accordion-button fw-medium fs-4" data-bs-toggle="collapse" data-bs-target="#faq1"> </button-->
+                    <span class="fw-medium fs-4">Age-appropiate experiences</span
+                    <img src="ion--add.svg" alt="" class="accodion-icon">
+            </div>
+            <div class="accodion-collapse collapse" id="faq1">
+                <div class="accordion-body">
+                    <span class="fw-medium">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus corporis, earum aut tenetur, reiciendis cupiditate et quos eveniet, possimus pariatur quas dolor consectetur. Voluptatem laborum ullam et sunt labore! Ipsam ratione ducimus assumenda, esse fugiat illum rem corporis praesentium explicabo nostrum, eligendi sit ea placeat. Nam est numquam necessitatibus debitis.</span>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <div class="accordion-header d-flex justify-content-between p-4" data-bs-toggle="collapse" data-bs-target="#faq2">
+                    <span class="fw-medium fs-4">Age-appropiate experiences</span
+                    <img src="ion--add.svg" alt="" class="accodion-icon">
+            </div>
+            <div class="accodion-collapse collapse" id="faq2">
+                <div class="accordion-body">
+                    <span class="fw-medium">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus corporis, earum aut tenetur, reiciendis cupiditate et quos eveniet, possimus pariatur quas dolor consectetur. Voluptatem laborum ullam et sunt labore! Ipsam ratione ducimus assumenda, esse fugiat illum rem corporis praesentium explicabo nostrum, eligendi sit ea placeat. Nam est numquam necessitatibus debitis.</span>
+                </div>
+            </div>
+        </div>
+     </div>
+
+     <!-- bootstraps -->
+      <div class="card my-5 w-50">
+        <div class="card-header">
+            <h5>Bootstrap card</h5>
+        </div>
+        <div class="card-body">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero nisi vitae quidem quam eum, nam atque molestiae sapiente voluptatem veritatis!</p>
+        </div>
+        <div class="card-footer">
+            <p class="text-center">Lorem, ipsum dolor.</p>
+        </div>
+      </div>
+
+
+
+      <div class="container">
+      <div class="row justify-content-around">
+        <div class="card col-12 col-md-6 col-lg-3">
+            <img src="imgi_49_Risevest_Henry.00_03_57_03.Still007_pbzpmt.jpg" alt="" class="card-img-top">
+            <div class="card-title">
+                <p class="fs-5 fw-medium">pintress card 1</p>
+            </div>
+            <div class="d-flex gap-1">
+                <button class="btn btn-secondary-subtle btn-sm">November 3, 2025</button>
+                <button class="btn btn-secondary-subtle btn-sm">Ads</button>
+                <button class="btn btn-secondary-subtle btn-sm">Creator</button>
+                <button class="btn btn-secondary-subtle btn-sm">trends</button>
+            </div>
+            
+        </div>
+        <div class="card col-12 col-md-6 col-lg-3">
+            <img src="imgi_50_Risevest_Henry.00_01_35_15.Still004_rlzbzx.jpg" alt="" class="card-img-top">
+            <div class="card-title">
+                <p class="fs-5 fw-medium">Say hello to pinterest assistance</p>
+            </div>
+            <div class="d-flex gap-1">
+                <button class="btn btn-secondary-subtle btn-sm">October 30, 2025</button>
+                <button class="btn btn-secondary-subtle btn-sm">Product</button>
+                
+            </div>
+        </div>
+
+        <div class="card col-12 col-md-6 col-lg-3">
+            <img src="imgi_51_Risevest_Henry.00_01_11_04.Still002_qzzgdj.jpg" alt="" class="card-img-top">
+            <div class="card-title">
+                <p class="fs-5 fw-medium">Pinterest board get ai</p>
+            </div>
+            <div class="d-flex gap-1">
+                <button class="btn btn-secondary-subtle btn-sm">October 30, 2025</button>
+                <button class="btn btn-secondary-subtle btn-sm">Product</button>
+            </div>
+        </div>
+      </div>
+      </div>
+
+      <div class="W-100 d-grid row-gap-1 column-gap-3 container" style="grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;">
+        <div class="w-auto bg-black" style="height: 200px;">1</div>
+        <div class="w-auto bg-danger" style="height: 200px;">2</div>
+        <div class="w-auto bg-warning" style="height: 200px;">3</div>
+        <div class="w-auto bg-warning" style="height: 200px;">4</div>
+        <div class="w-auto bg-info" style="height: 200px;">5</div>
+        <div class="w-auto bg-warning" style="height: 200px;">6</div>
+      </div>
+
+      <div class="card">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde veniam deserunt deleniti, ipsam animi molestiae doloribus. Veritatis, asperiores repellat corporis distinctio dolore iusto officia sapiente cupiditate velit molestiae, perspiciatis autem.
+      </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="s  <ha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script> -->
+
+</body>
+
+</html>                                 

@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Dispatch System V2</title>
+    <style>
+        :root {
+            --bg-color: #1e1e24;
+            --text-color: #ffffff;
+            --iphone-bezel: #111;
+            --accent-green: #34c759;
+            --accent-red: #ff3b30;
+            --accent-yellow: #ffcc00;
+            --glass-panel: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            gap: 40px;
+            padding: 40px;
+        }
+
+        /* --- 1. The Phone (iPhone 16 Style) --- */
+        .device-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .iphone {
+            width: 300px;
+            height: 600px;
+            background: var(--iphone-bezel);
+            border-radius: 50px;
+            padding: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            border: 4px solid #333;
+        }
+
+        .iphone-screen {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Dynamic Island */
+        .dynamic-island {
+            width: 90px;
+            height: 25px;
+            background: #000;
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 20px;
+            z-index: 100;
+        }
+
+        /* Phone States */
+        .off-overlay {
+            position: absolute;
+            inset: 0;
+            background: black;
+            z-index: 50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #555;
+            cursor: pointer;
+        }
+       
+        .home-screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            background: linear-gradient(180deg, #2c3e50, #000);
+            padding-top: 60px;
+            align-items: center;
+        }
+
+        .dialer-display {
+            font-size: 2.5rem;
+            margin-bottom: auto;
+            height: 50px;
+            letter-spacing: 2px;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .key {
+            width: 70px;
+            height: 70px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .key:active { background: rgba(255,255,255,0.4); }
+
+        .call-btn {
+            background: var(--accent-green);
+            grid-column: 2;
+        }
+
+        .calling-screen {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            background: rgba(20, 20, 20, 0.95);
+            padding: 80px 20px 40px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        /* --- 2. The Tablet (Dispatcher) --- */
+        .tablet {
+            width: 700px;
+            background: linear-gradient(145deg, #1a1a2e, #0f0f1e);
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.7),
+                        inset 0 0 30px rgba(0, 150, 255, 0.1);
+            border: 3px solid #00d4ff;
+            position: relative;
+        }
+
+        .tablet::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #00ff88;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .device-layout {
+            display: flex;
+            gap: 20px;
+        }
+
+        .tablet-screen {
+            flex: 1;
+            background: #f4f4f9;
+            border-radius: 12px;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        .video-display {
+            width: 200px;
+            background: #000;
+            border-radius: 12px;
+            border: 2px solid #00d4ff;
+            box-shadow: inset 0 0 20px rgba(0, 212, 255, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #00d4ff;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .device-controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .control-btn {
+            padding: 15px 30px;
+            background: linear-gradient(145deg, #ff3b30, #cc0000);
+            border: 2px solid #ff6b60;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 59, 48, 0.4),
+                        inset 0 0 10px rgba(255,255,255,0.1);
+            transition: all 0.2s;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 59, 48, 0.6);
+        }
+
+        .control-btn:active {
+            transform: translateY(0);
+        }
+
+        .tablet-header {
+            background: #007bff;
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tablet-body {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .incoming-alert {
+            display: none;
+            text-align: center;
+            width: 100%;
+        }
+
+        .patient-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .btn {
+            padding: 15px 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            transition: transform 0.1s;
+        }
+        .btn:active { transform: scale(0.98); }
+       
+        .btn-dispatch { background-color: var(--accent-green); }
+        .btn-hold { background-color: var(--accent-yellow); color: #333; }
+        .btn-reject { background-color: var(--accent-red); }
+
+        /* --- 3. Information Panel (Records) --- */
+        .info-panel {
+            width: 450px;
+            height: 600px;
+            background: var(--bg-color);
+            border: 1px solid #444;
+            border-radius: 15px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin-top: 15px;
+        }
+
+        th { text-align: left; color: #888; border-bottom: 2px solid #444; padding: 10px 5px; }
+        td { padding: 12px 5px; border-bottom: 1px solid #333; }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .st-pending { background: #333; color: #aaa; border: 1px solid #555; }
+        .st-queued { background: rgba(255, 204, 0, 0.2); color: var(--accent-yellow); border: 1px solid var(--accent-yellow); }
+        .st-completed { background: rgba(52, 199, 89, 0.2); color: var(--accent-green); border: 1px solid var(--accent-green); }
+        .st-rejected { background: rgba(255, 59, 48, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red); }
+
+    </style>
+</head>
+<body>
+    <!-- Audio Elements -->
+    <audio id="dialTone" src="sounds/dial-tone.mp3" preload="auto"></audio>
+    <audio id="ringTone" src="sounds/ring-tone.mp3" preload="auto"></audio>
+    <audio id="connectSound" src="sounds/connect.mp3" preload="auto"></audio>
+    <audio id="alertSound" src="sounds/alert.mp3" preload="auto"></audio>
+    <audio id="buttonClick" src="sounds/button-click.mp3" preload="auto"></audio>
+    <audio id="dispatchSound" src="sounds/dispatch.mp3" preload="auto"></audio>
+    <audio id="rejectSound" src="sounds/reject.mp3" preload="auto"></audio>
+    <audio id="hangupSound" src="sounds/hangup.mp3" preload="auto"></audio>
+
+
+    <div class="device-container">
+        <h3>Caller (iPhone)</h3>
+        <div class="iphone">
+            <div class="dynamic-island"></div>
+            <div class="iphone-screen">
+               
+                <div class="off-overlay" id="offScreen" ondblclick="wakePhone()">
+                    <span style="font-size: 0.9rem;">Tap to Wake</span>
+                </div>
+
+                <div class="home-screen" id="homeScreen">
+                    <div class="dialer-display" id="dialDisplay"></div>
+                    <div class="keypad">
+                        <div class="key" onclick="pressKey('1')">1</div>
+                        <div class="key" onclick="pressKey('2')">2</div>
+                        <div class="key" onclick="pressKey('3')">3</div>
+                        <div class="key" onclick="pressKey('4')">4</div>
+                        <div class="key" onclick="pressKey('5')">5</div>
+                        <div class="key" onclick="pressKey('6')">6</div>
+                        <div class="key" onclick="pressKey('7')">7</div>
+                        <div class="key" onclick="pressKey('8')">8</div>
+                        <div class="key" onclick="pressKey('9')">9</div>
+                        <div class="key" onclick="pressKey('*')">*</div>
+                        <div class="key" onclick="pressKey('0')">0</div>
+                        <div class="key" onclick="pressKey('#')">#</div>
+                        <div></div>
+                        <div class="key call-btn" onclick="makeCall()">
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.161 15.161 0 01-6.59-6.59l2.2-2.21c.28-.26.36-.65.25-1.01A11.36 11.36 0 01 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 1.01 10.43 9.36 18.79 19.78 19.78.55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/></svg>
+                        </div>
+                        <div class="key" style="background:transparent; cursor:default" onclick="clearDial()"><span style="font-size:1.2rem; color:#888">⌫</span></div>
+                    </div>
+                </div>
+
+                <div class="calling-screen" id="callingScreen">
+                    <div style="margin-top: 60px;">
+                        <h2 style="font-weight:400; margin-bottom:5px;">Emergency SOS</h2>
+                        <p id="callStatusText" style="color:#aaa;">Dialing 999...</p>
+                    </div>
+                    <div class="key call-btn" style="background: var(--accent-red); margin: 0 auto;" onclick="endCallByCaller()">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="white" style="transform: rotate(135deg);"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.161 15.161 0 01-6.59-6.59l2.2-2.21c.28-.26.36-.65.25-1.01A11.36 11.36 0 01 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 1.01 10.43 9.36 18.79 19.78 19.78.55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="device-container">
+        <h3>Emergency Dispatch Device</h3>
+        <div class="tablet">
+            <div class="device-layout">
+                <div class="tablet-screen">
+                    <div class="tablet-header">
+                        <span>999 Command Center</span>
+                        <span id="systemTime">12:00</span>
+                    </div>
+                    <div class="tablet-body">
+                       
+                        <div id="tabletIdle" style="text-align: center; color: #888;">
+                            <div style="font-size: 3rem; margin-bottom: 10px;">🛡️</div>
+                            <p>System Active. Waiting for calls...</p>
+                        </div>
+
+                        <div id="tabletActive" class="incoming-alert">
+                            <div class="patient-card">
+                                <h3 style="margin: 0 0 10px 0; color: #d00;">⚠️ Incoming SOS</h3>
+                                <p><strong>Caller ID:</strong> <span id="dispId">...</span></p>
+                                <p><strong>IP Address:</strong> <span id="dispIp">...</span></p>
+                                <p><strong>Location:</strong> <span id="dispAddr">...</span></p>
+                                <p><strong>Status:</strong> <span id="dispStatus" style="color:orange">Needs Action</span></p>
+                            </div>
+                           
+                            <div class="action-buttons">
+                                <button class="btn btn-reject" onclick="processAction('Rejected')">
+                                    ✖ Reject
+                                </button>
+                               
+                                <button class="btn btn-hold" onclick="processAction('Queued')">
+                                    ✋ No Units (Hold)
+                                </button>
+                               
+                                <button class="btn btn-dispatch" onclick="processAction('Completed')">
+                                    🚑 Send Ambulance
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="video-display" id="videoDisplay">
+                    <div>
+                        <div style="font-size: 2rem; margin-bottom: 10px;">📹</div>
+                        <p style="margin: 0; opacity: 0.7;">Video Feed<br/>Ready</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="device-container">
+        <h3>Emergency Records</h3>
+        <div class="info-panel">
+            <h2 style="margin-top:0; border-bottom:1px solid #444; padding-bottom:10px;">Live Feed</h2>
+            <table id="recordsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Caller</th>
+                        <th>Address</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        /* --- CONFIGURATION --- */
+        const locations = [
+            "under G, Ogbomoso",
+            "anglican grammer school, ogbomoso",
+            "Akande market, akande ogbooso",
+            "Bovas, taki area, ogbomoso",
+            "Sqict, Lautech area, ogbomoso",
+            "Caretaker Junction, Ogbomoso",
+            "Sabo Area, Ogbomoso",
+            "Ilorin Road, Ogbomoso",
+            "Takie Area, Ogbomoso",
+            "Owode Market, Ogbomoso",
+            "Palace Road, Ogbomoso",
+            "General Hospital, Ogbomoso",
+            "Oke Ado, Ogbomoso",
+            "Isale Ora, Ogbomoso",
+            "Stadium Road, Ogbomoso"
+        ];
+       
+        /* --- STATE VARIABLES --- */
+        let currentCallId = 1000;
+        let activeCall = null;
+        let callAccepted = false;
+        let ambulanceFound = null;
+
+        /* --- DOM ELEMENTS --- */
+        // Phone
+        const offScreen = document.getElementById('offScreen');
+        const homeScreen = document.getElementById('homeScreen');
+        const callingScreen = document.getElementById('callingScreen');
+        const dialDisplay = document.getElementById('dialDisplay');
+        const callStatusText = document.getElementById('callStatusText');
+
+        // Tablet
+        const tabletIdle = document.getElementById('tabletIdle');
+        const tabletActive = document.getElementById('tabletActive');
+        const dispId = document.getElementById('dispId');
+        const dispIp = document.getElementById('dispIp');
+        const dispAddr = document.getElementById('dispAddr');
+        const dispStatus = document.getElementById('dispStatus');
+        const callerNameInput = document.getElementById('callerNameInput');
+        const searchResults = document.getElementById('searchResults');
+        const ambulanceInfo = document.getElementById('ambulanceInfo');
+        const searchBtn = document.getElementById('searchBtn');
+        const sendCoordBtn = document.getElementById('sendCoordBtn');
+
+        // Records
+        const recordsTableBody = document.querySelector('#recordsTable tbody');
+
+        /* --- AUDIO ELEMENTS --- */
+        const dialTone = document.getElementById('dialTone');
+        const ringTone = document.getElementById('ringTone');
+        const connectSound = document.getElementById('connectSound');
+        const alertSound = document.getElementById('alertSound');
+        const buttonClick = document.getElementById('buttonClick');
+        const dispatchSound = document.getElementById('dispatchSound');
+        const rejectSound = document.getElementById('rejectSound');
+        const hangupSound = document.getElementById('hangupSound');
+
+        /* --- SOUND FUNCTIONS --- */
+        function playSound(audioElement) {
+            if(audioElement) {
+                audioElement.currentTime = 0;
+                audioElement.play().catch(e => console.log('Audio play failed:', e));
+            }
+        }
+
+        function stopSound(audioElement) {
+            if(audioElement) {
+                audioElement.pause();
+                audioElement.currentTime = 0;
+            }
+        }
+
+        /* --- PHONE FUNCTIONS --- */
+        function wakePhone() {
+            offScreen.style.display = 'none';
+            homeScreen.style.display = 'flex';
+            playSound(buttonClick);
+        }
+
+        function pressKey(num) {
+            if(dialDisplay.innerText.length < 5) {
+                dialDisplay.innerText += num;
+                playSound(buttonClick);
+            }
+        }
+
+        function clearDial() {
+            dialDisplay.innerText = dialDisplay.innerText.slice(0, -1);
+            playSound(buttonClick);
+        }
+
+        function makeCall() {
+            if(dialDisplay.innerText === '999') {
+                // Play dialing sound
+                playSound(dialTone);
+                
+                // Change Phone UI
+                homeScreen.style.display = 'none';
+                callingScreen.style.display = 'flex';
+                callStatusText.innerText = "Connecting...";
+               
+                // Simulate connection delay
+                setTimeout(() => {
+                    stopSound(dialTone);
+                    playSound(connectSound);
+                    callStatusText.innerText = "Dispatcher Connected";
+                    startEmergencyScenario();
+                }, 1500);
+
+            } else {
+                dialDisplay.style.color = 'var(--accent-red)';
+                playSound(rejectSound);
+                setTimeout(()=> dialDisplay.style.color = 'white', 500);
+            }
+        }
+
+        function endCallByCaller() {
+            playSound(hangupSound);
+            stopSound(dialTone);
+            stopSound(ringTone);
+            resetPhoneUI();
+            if(activeCall) {
+                // If caller hangs up, mark as cancelled in system
+                updateRecordStatus(activeCall.id, "Rejected");
+                resetTabletUI();
+            }
+        }
+
+        function resetPhoneUI() {
+            callingScreen.style.display = 'none';
+            homeScreen.style.display = 'flex';
+            dialDisplay.innerText = "";
+        }
+
+        /* --- DISPATCH LOGIC --- */
+        function startEmergencyScenario() {
+            currentCallId++;
+            const newIp = `192.168.0.${Math.floor(Math.random() * 99)}`;
+            const newAddr = locations[Math.floor(Math.random() * locations.length)];
+
+            activeCall = {
+                id: currentCallId,
+                ip: newIp,
+                address: newAddr,
+                status: 'Pending', // Initial state
+                callerName: ''
+            };
+
+            // Reset state
+            callAccepted = false;
+            ambulanceFound = null;
+            searchBtn.disabled = true;
+            sendCoordBtn.disabled = true;
+            searchResults.style.display = 'none';
+            callerNameInput.value = '';
+
+            // Play alert sound for incoming emergency
+            playSound(alertSound);
+
+            // Update Tablet
+            tabletIdle.style.display = 'none';
+            tabletActive.style.display = 'block';
+            dispId.innerText = `#${activeCall.id}`;
+            dispIp.innerText = activeCall.ip;
+            dispAddr.innerText = activeCall.address;
+            dispStatus.innerText = "Needs Action";
+            dispStatus.style.color = "orange";
+
+            // Add Row to Table
+            addRecordRow(activeCall);
+        }
+
+        function acceptCall() {
+            if(!activeCall) return;
+            
+            const name = callerNameInput.value.trim();
+            if(!name) {
+                alert('Please enter caller name first');
+                callerNameInput.focus();
+                return;
+            }
+
+            playSound(connectSound);
+            activeCall.callerName = name;
+            callAccepted = true;
+            
+            dispStatus.innerText = "Call Accepted";
+            dispStatus.style.color = "#2196f3";
+            
+            // Enable search button
+            searchBtn.disabled = false;
+            
+            // Disable name input
+            callerNameInput.disabled = true;
+        }
+
+        function rejectCall() {
+            if(!activeCall) return;
+
+            playSound(rejectSound);
+            activeCall.status = 'Rejected';
+            activeCall.callerName = callerNameInput.value.trim() || 'Unknown';
+            updateRecordStatus(activeCall.id, "Rejected", activeCall.callerName);
+            
+            resetPhoneUI();
+            resetTabletUI();
+        }
+
+        function searchNearbyAmbulance() {
+            if(!activeCall || !callAccepted) return;
+
+            playSound(buttonClick);
+            
+            // Simulate searching
+            const ambulanceId = `A${Math.floor(Math.random() * 900) + 100}`;
+            const eta = Math.floor(Math.random() * 10) + 5;
+            const distance = (Math.random() * 5 + 0.5).toFixed(1);
+            
+            ambulanceFound = {
+                id: ambulanceId,
+                eta: eta,
+                distance: distance
+            };
+            
+            // Display results
+            searchResults.style.display = 'block';
+            ambulanceInfo.innerHTML = `
+                <strong>Ambulance Found:</strong> ${ambulanceId}<br>
+                <strong>Distance:</strong> ${distance} km<br>
+                <strong>ETA:</strong> ${eta} minutes
+            `;
+            
+            // Enable send coordinates button
+            sendCoordBtn.disabled = false;
+            
+            dispStatus.innerText = "Ambulance Located";
+            dispStatus.style.color = "#ff9800";
+        }
+
+        function sendCoordinates() {
+            if(!activeCall || !callAccepted || !ambulanceFound) return;
+
+            playSound(dispatchSound);
+            
+            activeCall.status = 'Completed';
+            updateRecordStatus(activeCall.id, "Completed", activeCall.callerName);
+            
+            dispStatus.innerText = "Coordinates Sent";
+            dispStatus.style.color = "var(--accent-green)";
+            
+            // Update search results
+            ambulanceInfo.innerHTML += `<br><strong style="color: #2e7d32;">✓ Coordinates sent to ${ambulanceFound.id}</strong>`;
+            
+            // End call after short delay
+            setTimeout(() => {
+                resetPhoneUI();
+                resetTabletUI();
+            }, 2000);
+        }
+
+        function resetTabletUI() {
+            tabletActive.style.display = 'none';
+            tabletIdle.style.display = 'block';
+            activeCall = null;
+            callAccepted = false;
+            ambulanceFound = null;
+            searchResults.style.display = 'none';
+            callerNameInput.disabled = false;
+        }
+
+        /* --- RECORDS TABLE LOGIC --- */
+        function addRecordRow(data) {
+            const row = document.createElement('tr');
+            row.id = `row-${data.id}`;
+            row.innerHTML = `
+                <td>#${data.id}</td>
+                <td id="caller-${data.id}">-</td>
+                <td>${data.address}</td>
+                <td><span class="status-badge st-pending">Pending</span></td>
+            `;
+            recordsTableBody.prepend(row);
+        }
+
+        function updateRecordStatus(id, status, callerName = null) {
+            const row = document.getElementById(`row-${id}`);
+            if(row) {
+                const badge = row.querySelector('.status-badge');
+                // Remove old classes
+                badge.className = 'status-badge';
+               
+                // Update caller name if provided
+                if(callerName) {
+                    const callerCell = document.getElementById(`caller-${id}`);
+                    if(callerCell) callerCell.innerText = callerName;
+                }
+               
+                // Add new class based on status
+                if(status === 'Queued') {
+                    badge.classList.add('st-queued');
+                    badge.innerText = 'Queued (No Units)';
+                } else if(status === 'Completed') {
+                    badge.classList.add('st-completed');
+                    badge.innerText = 'Dispatched';
+                } else if(status === 'Rejected') {
+                    badge.classList.add('st-rejected');
+                    badge.innerText = 'Rejected';
+                }
+            }
+        }
+
+        // Simple Clock
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('systemTime').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }, 1000);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>99 bottle</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- ...existing code... -->
+    <style>
+      body {
+        background: radial-gradient(
+          1200px 700px at 10% 10%,
+          #e7f1ff 0%,
+          #365d84 45%,
+          #314a64 100%
+        );
+      }
+
+      .hero-kicker {
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+      }
+
+      .song-card {
+        border: 0;
+        border-radius: 1rem;
+        overflow: hidden;
+      }
+
+      .song-card .card-header {
+        background: linear-gradient(135deg, #132b4f 0%, #2a6553 100%);
+        color: #fff;
+        border: 0;
+      }
+
+      #display .card-body {
+        max-height: 70vh;
+        overflow: auto;
+      }
+    </style>
+  </head>
+
+  <body class="bg-light">
+    <div class="container mt-5">
+      <!-- ...existing code... -->
+      <div class="text-center mb-4">
+        <div class="hero-kicker text-primary fw-semibold">loop practice</div>
+        <h1 class="display-6 fw-bold mb-2">99 Bottles of Beer on the Wall</h1>
+        <p class="text-muted mb-0">
+          A tiny generator that prints the full lyrics from
+          <span class="fw-semibold">99</span> down to
+          <span class="fw-semibold">no more</span>.
+        </p>
+      </div>
+
+      <div id="display" class="card shadow-sm song-card">
+        <div
+          class="card-header d-flex align-items-center justify-content-between"
+        >
+          <div class="fw-semibold">Lyrics Output</div>
+          <span class="badge text-bg-light">Auto-generated</span>
+        </div>
+
+        <div class="card-body" style="color: rgb(37, 45, 42); font-size: 18px">
+          <div class="alert alert-info mb-4" role="alert">
+            Play this song <a href="" onclick="">here</a>
+          </div>
+          <!-- JS appends the verses here -->
+        </div>
+
+        <div
+          class="card-footer bg-white text-muted small d-flex justify-content-between"
+        >
+          <span>Faithinator tools</span>
+          <span>HTML 5: CSS 3: Bootstrap 5: Vanila JS</span>
+        </div>
+      </div>
+      <!-- ...existing code... -->
+    </div>
+
+    <script>
+      const displayBody = document.querySelector("#display .card-body");
+      for (let l = 99; l <= 100 && l > 0; l--) {
+        let decress = l - 1;
+        if (l - 1 === 0) {
+          decress = "no more";
+        }
+        displayBody.innerHTML += `<p class="mb-3">${l} bottles of beer on the wall, ${l} bottles of beer.<br> Take one down and pass it around, ${decress} bottles of beer on the wall.</p>`;
+      }
+    </script>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

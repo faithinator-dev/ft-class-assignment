@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- <audio src="Sia_-_Unstoppable_CeeNaija.com_.mp3" controls></audio> -->
+     <button onclick="playMusic()" id="play">Play Music</button>
+</body>
+<script>
+  let play = document.getElementById("play")
+  const myMusic = new Audio("audio/Sia_-_Unstoppable_CeeNaija.com_.mp3")
+
+  function playMusic() {
+    console.log("music is playing")
+    myMusic.play()
+    // play.innerHTML = `<button onclick="pauseMusic()" id="pause">Play Music</button>`
+
+    
+  }
+
+  function pauseMusic() {
+    myMusic.pause()
+    pause.innerHTML =`<button onclick="playMusic()" id="play">pause Music</button>`
+  }
+
+  
+</script>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <input type="text" id="item"><button onclick="addItem">add</button>
+
+    <div id="displayItem"></div>
+</body>
+<script>
+    let allItems = []
+    
+    function addItem(){
+        let item = document.getElementById('item').value
+        allItems.push(item)
+        displayItem()
+    }
+
+    function displayItem(){
+        let display = document.getElementById('displayItem')
+        // display.innerHTML = ""
+        // for (let i = 0; i < items.length; i++) {
+        //     const element = items[i];
+        //     display.innerHTML += `
+        //     <p>${i}. ${element}</p>`
+        // }
+    }
+
+    function removeItem(index){
+        items.splice(index, 1)
+        displayItem()
+    }
+
+    function showitems(){
+        displayItem.innerHTML = ""
+        for (let i = 0; i < allItems.length; i++) {
+            const element = allItems[i];
+            displayItem.innerHTML += `
+            <p>${i+1}. ${element}</p> <button onclick="removeItem(${i})">delete</button>
+            `
+        }
+    }
+
+    allItems.map((info, i) => {
+        display.innerHTML += `
+        <p>${i}. ${info} <button onclick="removeItem(${i})">delete</button></p>`
+    })
+
+    show
+</script>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airtime generator generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body class="text-center justify-content-center m-5 p-5">
+    <div class="btn-info mx-auto border-1 border-success m-2 p-2 rounded-pill w-75">
+        <h1 class="display-4 fs-2 text-success">Airtime generator</h1>
+
+        <p>Input the amount of card you want to buy</p>
+        <input type="number" class="form-control btn-outline-secondary " id="useramount" required><br><br>
+        <p>Select the card</p>
+
+        <select id="airtimelist" required>
+            <option value="MTN" id="mtn">MTN</option>
+            <option value="Airtle" id="airtel">Airtel</option>
+            <option value="GLO" id="glo">
+                GLO
+            </option>
+        </select> <br><br>
+
+        <button class="btn m-2 btn-outline-success" onclick="generateCard(16)">generate airtime</button>
+        
+        <div class="display mx-auto" id="display"></div>
+    </div>
+
+
+    <script>
+        function generateCard(length){
+        // let airtime = [
+        //     "mtn",
+        //     "airtel",
+        //     "Glo",
+        // ]
+
+        amount = useramount.value
+        services = airtimelist.value
+        // lenght = 16
+        const char = '012345678901234567890123456789'.split('')
+        let voucher = '';
+        for (let i = 0; i < length; i++){
+            voucher += char[Math.floor(Math.random() * char.length)]
+        }
+        const display = document.querySelector('.display');
+
+
+        if (amount == "" || services == ""){
+        display.innerHTML = '';
+        display.innerHTML = `<p>Input an amount`;
+
+        }else{
+        display.innerHTML = '';
+        display.innerHTML += 
+        `<div>
+            <div>
+                <table class="table table-primary rounded">
+                    <tr>
+                        <td>${amount}</td>
+                        <td>${services}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Voucher Code: <strong>${voucher}</strong></td>
+                    </tr>
+                </table>
+            </div>
+            
+        </div>`;
+        // return voucher;
+        }
+    }
+    display.innerHTML = '';
+
+
+    </script>
+</body>
+</html>

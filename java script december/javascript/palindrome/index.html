@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="showError" style="display: none;"><marquee behavior="" direction="">value can't be empty</marquee></div>
+    <input type="text" id="userInput" placeholder="fill in the input">
+    <button class="btn" id="btn">check</button>
+    <div id="show">Result will show here</div>
+    <script>
+        // let nameCon = getElementById(`userName`).value
+        // console.log(userName.value)
+        const btnCheck = document.getElementById('btn')
+        btnCheck.addEventListener('click', ()=>{
+            // result.innerHTML = nameCon + "ion"
+            show.innerHTML = ""
+            if (userInput.value == ""){
+                showError.style = "block"
+                show.innerHTML = `result will show here ...`
+            } else {
+                showError.style.display = "none"
+                show.style.display = 'block'
+                const convertedWord = (userInput.value).toLowerCase()
+                const reversedWord = convertedWord.split('').reverse().join('')
+                console.log(reversedWord);
+                if(convertedWord == reversedWord) {
+                    show.innerHTML = ''
+                    show.innerHTML = `<p style="color: #00f;">${convertedWord} is a palindrome</p>`
+                } else {
+                    
+                    show.innerHTML = ''
+                    show.innerHTML = `<p style="color: #f00;">${convertedWord} is not a palindrome</p>`
+                }
+            }
+        })
+    </script>
+</body>
+</html>

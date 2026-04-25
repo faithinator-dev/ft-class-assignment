@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>99 bottle</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="img">
+            <img src="" alt="" width="100%"
+            height="100px">
+    </div>
+    <div class="container mt-5">
+        <h1 class="text-center text-primary mb-4" style="color: green;">99 Bottles of Beer on the Wall</h1>
+        <div id="display" class="card shadow-sm" style="text-align: justify;">
+            <div class="card-body" style="color:rgb(37, 45, 42); font-size:18px;">
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        for (let l = 99; l <= 99 && l >= 0; l--) {
+            let reduction = l - 1;
+            if (l == 0){
+                reduction = 'no more';
+                display.innerHTML += `<p class="mb-3" style="color: black; font-weight:bold;">${reduction} bottles of beer on the wall, ${reduction} bottles of beer.<br> Take one down and pass it around, 99 bottles of beer on the wall.</p>`;
+            }
+            if (l === 0){
+                reduction = '99';
+            }
+            if (l - 1 === 0) {
+                reduction = 'no more';
+            }
+            display.innerHTML += `<p class="mb-3" style="color: black; font-weight:bold;">${l} bottles of beer on the wall, ${l} bottles of beer.<br> Take one down and pass it around, ${reduction} bottles of beer on the wall.</p>`;
+        }
+    </script>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

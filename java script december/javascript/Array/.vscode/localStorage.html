@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <span id="display">my name is </span> <!-- this is a span element with id display and it will be used to display the name stored in localstorage -->
+    <script>
+        // const user = {name: "faith Tolu", age: 30, course: "Software Engineering"}
+        // localStorage.setItem("name", user.name)
+        // localStorage.setItem("age", user.age)
+        // localStorage.setItem("course", user.course)
+        // consol.log(user)
+
+        const display = document.getElementById('display') // this is to get the span element with id display and store it in a variable called display
+
+        display.innerText += localStorage.getItem('name') // it will get the value of name from localstorage and display it in the span element
+
+        let list = ["book", "projector", "journal", 'baby'] //this is an array
+        // localStorage.setItem('items', items)
+
+
+        // javascript datatype |  Localstorage
+        // string | string
+        // number | string
+        // boolean | string
+        // array | string
+        // object | string
+
+        // to store array in localstorage we need to convert it to string using JSON.stringify()
+        // JSON.parse() is used to convert string back to array
+        // or put "" around the array
+        
+
+
+        localStorage.setItem('items', JSON.stringify(list)) // it will convert the array to string and store it in localstorage
+        console.log(localStorage.getItem('items')) //it will return a string
+        console.log(JSON.parse(localStorage.getItem('items'))) // it will return an array
+    </script>
+</body>
+</html>

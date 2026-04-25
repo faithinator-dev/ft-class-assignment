@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+
+    <div class="container">
+        <input type="password" id="password" class="form-control" onkeypress="pass(event)">
+        <div class="container" id="Stat" >
+            <span id="passwordlenght" style="color: grey;" >At least 8 character
+            </span> <br>
+            <span id="UppercaseStat" style="color: grey;"> must Contain uppercase and lowercase</span><br>
+            <span id="DigitNum" style="color: grey;">must contain Number</span><br>
+
+            <span id="char" style="color: grey;">Must contain character</span>
+        </div>
+    </div>
+
+
+    
+    <script>
+        const statement = "good morning, Welcome to class"
+
+        // const phone_number = "+08123456789"
+// 
+        // const regex = /to/;
+
+        // [] character set
+        //^[] starts with
+        //[^] not contain
+        //$  end with
+
+        // const regex = /^[+]/;
+
+
+        // console.log(regex.test(phone_number)) // it will return true if the pattern is found in the string and false if it is not found
+
+        // console.log(regex.test(statement)) // it will return true if the pattern is found in the string and false if it is not found
+        // console.log(regex.exec(statement)) // it will return an array of the matched pattern and its index in the string
+        // console.log(statement.match(regex)) // it will return an array of the matched pattern and its index in the string
+        // console.log(statement.search(regex)) // it will return the index of the first occurrence of the pattern in the string
+        // console.log(statement.replace(regex, "from")) // it will replace the first occurrence of the pattern with the specified string  
+
+        const phone_number = "+2347046111023"
+        const digitCheck = /^[+]+\d{11,13}$/
+        
+        // const password = "Password@123^"
+        // const passwordCheck = /[\w][!@#$%^&*]/;
+
+        if (digitCheck.test(phone_number)){
+            console.log('phone number is valid');
+        } else {
+            console.log("invalid phoneNumber");
+        }
+
+        //password Rules - upperCase, lowerCase, digit, special Char
+
+        let userPassword = document.getElementById("password")
+        const lenghtDsp = document.getElementById("passwordlenght")
+        const uppercaseDis = document.getElementById("UppercaseStat")
+        const DigitDisplay = document.getElementById("DigitNum")
+        const Char = document.getElementById("char")
+
+
+
+        // ?= mean look ahead
+        // .* mean check if it exist not if it start with or end with just check
+        const upperRegex = /(?=.*[A-Z])/
+        const lowerRegex = /(?=.*[a-z])/
+        const digitRegex = /(?=.*\d)/
+        const specialRegex = /(?=.*[!@#$%^&*()-_+=.?/<>])/
+        const lengthCheck = /.{8,}/
+        console.log(userPassword.value)
+
+        // if (upperRegex.test(userPassword)) {
+        //     console.log("there is an uppercase"
+        //     )
+
+        // } else {
+        //     console.log("there is no uppercase")
+        // }
+
+        // if (lowerRegex.test(userPassword)){
+        //     console.log('Password as a lower case')
+        // }else {
+        //     console.log('password doest have a lower case')
+        // }
+        const index = userPassword.value
+
+        
+        function pass(e){
+
+
+        let input = e.target.value
+
+        if ( digitRegex.test(input)){
+            console.log('Password as a number')
+            DigitDisplay.style.color = "green"
+
+        }else {
+            console.log('Password as no number')
+            DigitDisplay.style.color = "grey"
+        }   
+
+        if (specialRegex.test(input)){
+            console.log('password has special character');
+            Char.style.color = "green"
+
+        } else {
+            console.log('password has special character')
+            Char.style.color = "grey"
+        }
+
+         if (upperRegex.test(input) && lowerRegex.test(input)) {
+            uppercaseDis.style.color = "green"  
+         }else {
+            uppercaseDis.style.color = "grey"
+         } 
+
+         if (lengthCheck.test(input)) {
+            lenghtDsp.style.color = "green"
+         }else {
+            lenghtDsp.style.color = "grey"
+         }
+         }
+    </script>
+</body>
+</html>

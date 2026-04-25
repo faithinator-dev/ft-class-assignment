@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="checkInfo()">Check info</button>
+    <div id="show"></div>
+    
+    <script>
+        const endpoint = "https://jsonplaceholder.typicode.com/users";
+        const checkInfo = async() => {
+            // alert("info leyan fifo")
+            const result = fetch(endpoint)
+            // console.log(result)
+            const awaitingResult = await result
+            // console.log(awaitingResult)
+            const convertedresult = await awaitingResult.json()
+            console.log(convertedresult)
+
+            convertedresult.map((info) => {
+            show.innerHTML += 
+            `
+                <div>
+                    <p>${info.id}. ${info.name}</p>
+                </div>
+            `
+            })
+
+            
+
+        }
+
+        
+    </script>
+</body>
+</html>

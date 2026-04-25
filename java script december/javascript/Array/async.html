@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+
+    <p id="timer"></p>
+</body>
+<script>
+    console.log('my first input');
+
+    setTimeout(() => {
+        console.log('i am a timer');
+    }, 2000)
+
+    console.log('my second input');
+
+    console.log('my last output');
+
+    const today = new Date;
+
+    console.log(today.getDay());
+    console.log(today.getDate());
+    console.log(today.getMonth());
+    console.log(today.getFullYear());
+    console.log(today.getHours());
+    console.log(today.getMinutes());
+    console.log(today.getSeconds());
+    console.log(today.getMilliseconds());
+    console.log(today.getTime());
+    // console.log(today.toString());
+    // console.log(today.toLocaleString());
+    // console.log(today.toLocaleDateString());
+    // console.log(today.toLocaleTimeString());
+    // console.log(today.toJSON());
+    // console.log(today.toISOString());
+    const hour = today.getHours() 
+    console.log(hour);
+    const minute = today.getMinutes()
+    console.log(minute);
+    const second = today.getSeconds()
+    console.log(second);
+
+
+    document.getElementById('timer').innerText += hour + ":" + minute + ":" + second;
+    
+
+    // setInterval(() => {} work like setTimeout but it will repeat the function every specified time until it is cleared using clearInterval() method
+    
+    // way one
+    
+    // const timer = setInterval(() => {
+    //     const today = new Date;
+    //     const hour = today.getHours() 
+    //     const minute = today.getMinutes()
+    //     const second = today.getSeconds()
+    //     document.getElementById('timer').innerText = hour + ":" + minute + ":" + second;
+    // }, 1000)
+
+    // way two
+
+    function clock(){
+        document.getElementById('timer').innerText = new Date().toLocaleTimeString();
+    }
+    // setInterval(clock, 1000)
+
+    setInterval(() => {
+        clock()
+    }, 1000)
+    
+</script>
+</html>

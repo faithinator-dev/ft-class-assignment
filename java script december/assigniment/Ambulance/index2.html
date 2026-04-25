@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Dispatch System Demo</title>
+    <style>
+        :root {
+            --bg-color: #1e1e24;
+            --text-color: #ffffff;
+            --iphone-bezel: #000;
+            --iphone-screen: #000;
+            --accent-green: #34c759;
+            --accent-red: #ff3b30;
+            --glass-panel: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            gap: 40px;
+            padding: 20px;
+        }
+
+        /* --- 1. The Phone (iPhone 16 Style) --- */
+        .device-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .iphone {
+            width: 300px;
+            height: 600px;
+            background: var(--iphone-bezel);
+            border-radius: 45px;
+            padding: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
+            border: 2px solid #333;
+        }
+
+        .iphone-screen {
+            width: 100%;
+            height: 100%;
+            background-color: #000; /* Dark/Off by default */
+            border-radius: 35px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Dynamic Island */
+        .dynamic-island {
+            width: 100px;
+            height: 28px;
+            background: #000;
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 20px;
+            z-index: 10;
+        }
+
+        /* Phone UI States */
+        .off-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: black;
+            z-index: 5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #555;
+            font-size: 0.9rem;
+        }
+       
+        .home-screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            background: linear-gradient(180deg, #2c3e50, #000);
+            padding-top: 50px;
+            align-items: center;
+        }
+
+        .dialer-display {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            height: 50px;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .key {
+            width: 65px;
+            height: 65px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.1s;
+        }
+        .key:active { background: rgba(255,255,255,0.4); }
+
+        .call-btn {
+            background: var(--accent-green);
+            grid-column: 2;
+        }
+
+        .calling-screen {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            background: #1c1c1e;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        /* --- 2. The Tablet (Dispatcher) --- */
+        .tablet {
+            width: 500px;
+            height: 350px;
+            background: #333;
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border: 2px solid #555;
+        }
+
+        .tablet-screen {
+            width: 100%;
+            height: 100%;
+            background: #f0f2f5;
+            border-radius: 10px;
+            color: #333;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tablet-header {
+            background: #0056b3;
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .tablet-body {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .incoming-alert {
+            display: none; /* Hidden until called */
+            text-align: center;
+            animation: pulse 1s infinite;
+        }
+
+        .status-badge {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent-red);
+            margin-bottom: 20px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+       
+        .btn-accept { background-color: var(--accent-green); }
+        .btn-reject { background-color: var(--accent-red); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* --- 3. Information Panel (Records) --- */
+        .info-panel {
+            width: 400px;
+            height: 600px;
+            background: var(--glass-panel);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        h2 { margin-top: 0; border-bottom: 1px solid #555; padding-bottom: 10px; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        th { color: #aaa; }
+
+        .status-pending { color: orange; }
+        .status-completed { color: var(--accent-green); }
+        .status-rejected { color: var(--accent-red); }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="device-container">
+        <h3>User (iPhone 16)</h3>
+        <div class="iphone">
+            <div class="dynamic-island"></div>
+            <div class="iphone-screen" id="iphoneScreen">
+               
+                <div class="off-overlay" id="offScreen" onclick="wakePhone()">
+                    Tap to Wake
+                </div>
+
+                <div class="home-screen" id="homeScreen">
+                    <div style="margin-bottom: auto; color: #fff; font-size: 0.8rem;">Emergency SOS</div>
+                    <div class="dialer-display" id="dialDisplay"></div>
+                    <div class="keypad">
+                        <div class="key" onclick="pressKey('1')">1</div>
+                        <div class="key" onclick="pressKey('2')">2</div>
+                        <div class="key" onclick="pressKey('3')">3</div>
+                        <div class="key" onclick="pressKey('4')">4</div>
+                        <div class="key" onclick="pressKey('5')">5</div>
+                        <div class="key" onclick="pressKey('6')">6</div>
+                        <div class="key" onclick="pressKey('7')">7</div>
+                        <div class="key" onclick="pressKey('8')">8</div>
+                        <div class="key" onclick="pressKey('9')">9</div>
+                        <div class="key" onclick="pressKey('*')">*</div>
+                        <div class="key" onclick="pressKey('0')">0</div>
+                        <div class="key" onclick="pressKey('#')">#</div>
+                        <div class="key" style="background:transparent; cursor:default"></div>
+                        <div class="key call-btn" onclick="makeCall()"><svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.161 15.161 0 01-6.59-6.59l2.2-2.21c.28-.26.36-.65.25-1.01A11.36 11.36 0 01 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 1.01 10.43 9.36 18.79 19.78 19.78.55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/></svg></div>
+                        <div class="key" style="background:transparent; cursor:default" onclick="clearDial()"><span style="font-size:1rem; color:#888">⌫</span></div>
+                    </div>
+                </div>
+
+                <div class="calling-screen" id="callingScreen">
+                    <div style="margin-top: 50px;">
+                        <h2 style="border:none;">Emergency</h2>
+                        <p>Calling...</p>
+                    </div>
+                    <div class="key call-btn" style="background: var(--accent-red); margin: 0 auto;" onclick="endCall()">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white" style="transform: rotate(135deg);"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.161 15.161 0 01-6.59-6.59l2.2-2.21c.28-.26.36-.65.25-1.01A11.36 11.36 0 01 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 1.01 10.43 9.36 18.79 19.78 19.78.55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="device-container">
+        <h3>Dispatcher (Hospital Tablet)</h3>
+        <div class="tablet">
+            <div class="tablet-screen">
+                <div class="tablet-header">
+                    <span>999 Emergency Dispatch</span>
+                    <span>Status: Online</span>
+                </div>
+                <div class="tablet-body">
+                    <div id="tabletIdle">
+                        <p style="color:#777">No active calls. Waiting...</p>
+                    </div>
+
+                    <div id="tabletIncoming" class="incoming-alert">
+                        <div class="status-badge">INCOMING SOS</div>
+                        <p>From: 192.168.1.XX</p>
+                        <p>Loc: Calculating...</p>
+                        <div class="action-buttons">
+                            <button class="btn btn-reject" onclick="handleDispatch('Rejected')">Reject</button>
+                            <button class="btn btn-accept" onclick="handleDispatch('Completed')">Accept & Deploy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="device-container">
+        <h3>Emergency Records</h3>
+        <div class="info-panel">
+            <h2>Live Database</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>IP Address</th>
+                        <th>Real Address</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="recordsTable">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // --- State Management ---
+        let currentCallId = 0;
+        let activeCallData = null;
+
+        // --- Addresses for simulation ---
+        const locations = [
+            "under G, Ogbomoso",
+            "anglican grammer school, ogbomoso",
+            "Akande market, akande ogbooso",
+            "Bovas, taki area, ogbomoso",
+            "Sqict, Lautech area, ogbomoso",
+            "Caretaker Junction, Ogbomoso",
+            "Sabo Area, Ogbomoso",
+            "Ilorin Road, Ogbomoso",
+            "Takie Area, Ogbomoso",
+            "Owode Market, Ogbomoso",
+            "Palace Road, Ogbomoso",
+            "General Hospital, Ogbomoso",
+            "Oke Ado, Ogbomoso",
+            "Isale Ora, Ogbomoso",
+            "Stadium Road, Ogbomoso"
+        ];
+
+        const dummyAddresses = locations
+
+        // --- Phone Functions ---
+        const dialDisplay = document.getElementById('dialDisplay');
+        const offScreen = document.getElementById('offScreen');
+        const homeScreen = document.getElementById('homeScreen');
+        const callingScreen = document.getElementById('callingScreen');
+
+        function wakePhone() {
+            offScreen.style.display = 'none';
+            homeScreen.style.display = 'flex';
+        }
+
+        function pressKey(key) {
+            if (dialDisplay.innerText.length < 10) {
+                dialDisplay.innerText += key;
+            }
+        }
+
+        function clearDial() {
+            dialDisplay.innerText = dialDisplay.innerText.slice(0, -1);
+        }
+
+        function makeCall() {
+            const number = dialDisplay.innerText;
+            if (number === '999') {
+                // UI Switch
+                homeScreen.style.display = 'none';
+                callingScreen.style.display = 'flex';
+               
+                // Trigger Tablet Logic
+                triggerEmergency();
+            } else {
+                dialDisplay.style.color = 'red';
+                setTimeout(() => dialDisplay.style.color = 'white', 500);
+                dialDisplay.innerText = "Error";
+                setTimeout(() => dialDisplay.innerText = "", 1000);
+            }
+        }
+
+        function endCall() {
+            // Reset Phone
+            callingScreen.style.display = 'none';
+            homeScreen.style.display = 'flex';
+            dialDisplay.innerText = "";
+           
+            // If ended by user before dispatcher acts
+            if(document.getElementById('tabletIncoming').style.display === 'block') {
+                resetTablet();
+            }
+        }
+
+        // --- Tablet & Logic Functions ---
+        const tabletIdle = document.getElementById('tabletIdle');
+        const tabletIncoming = document.getElementById('tabletIncoming');
+        const recordsTable = document.getElementById('recordsTable');
+
+        function generateRandomIP() {
+            return `192.168.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
+        }
+
+        function triggerEmergency() {
+            currentCallId++;
+            const ip = generateRandomIP();
+            const address = dummyAddresses[Math.floor(Math.random() * dummyAddresses.length)];
+           
+            activeCallData = {
+                id: currentCallId,
+                ip: ip,
+                address: address,
+                status: 'Pending'
+            };
+
+            // Update Tablet UI
+            tabletIdle.style.display = 'none';
+            tabletIncoming.style.display = 'block';
+            tabletIncoming.querySelector('p').innerText = `From: ${ip}`;
+            tabletIncoming.querySelectorAll('p')[1].innerText = `Loc: ${address}`;
+
+            // Add Pending Row to Table
+            addRecordRow(activeCallData);
+        }
+
+        function handleDispatch(action) {
+            if (!activeCallData) return;
+
+            // Update Status
+            activeCallData.status = action; // 'Completed' or 'Rejected'
+           
+            // Update Table Row
+            updateLastRowStatus(action);
+
+            if (action === 'Completed') {
+                alert(`Ambulance Dispatched to ${activeCallData.address}`);
+            }
+
+            // Reset Phone Logic (simulate hangup)
+            endCall();
+            resetTablet();
+        }
+
+        function resetTablet() {
+            tabletIncoming.style.display = 'none';
+            tabletIdle.style.display = 'block';
+            activeCallData = null;
+        }
+
+        // --- Database Functions ---
+        function addRecordRow(data) {
+            const row = recordsTable.insertRow(0); // Add to top
+            row.id = `row-${data.id}`;
+           
+            const cellId = row.insertCell(0);
+            const cellIp = row.insertCell(1);
+            const cellAddr = row.insertCell(2);
+            const cellStatus = row.insertCell(3);
+
+            cellId.innerText = data.id;
+            cellIp.innerText = data.ip;
+            cellAddr.innerText = data.address;
+            cellStatus.innerHTML = `<span class="status-pending">Pending...</span>`;
+        }
+
+        function updateLastRowStatus(status) {
+            if(!activeCallData) return;
+            const row = document.getElementById(`row-${activeCallData.id}`);
+            if(row) {
+                const statusCell = row.cells[3];
+                const cssClass = status === 'Completed' ? 'status-completed' : 'status-rejected';
+                statusCell.innerHTML = `<span class="${cssClass}">${status}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>

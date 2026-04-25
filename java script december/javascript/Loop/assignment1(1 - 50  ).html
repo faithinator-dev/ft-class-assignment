@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="show" id="show"></div>
+    <script>
+        for (let i = 1; i <= 50; i++) {
+            if (i % 3 === 0 && i % 5 === 0){
+                show.innerHTML += `<p class="text-capitalize text-success text-center">${i} - Fizz Buzz`;
+            } else if (i % 3 === 0){
+                show.innerHTML += `<p class="text-capitalize text-danger text-center">${i} - fizz`;
+            } else if (i % 5 === 0) {
+                show.innerHTML += `<p class="text-capitalize text-warning text-center">${i} - Buzz`
+            }
+        }
+    </script>
+</body>
+</html>
